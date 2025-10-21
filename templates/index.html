@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}Accueil - Archive Platform{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="hero-content">
+        <div class="hero-text">
+            <h1>Votre espace de stockage personnel</h1>
+            <p class="hero-subtitle">Stockez, organisez et partagez vos fichiers en toute sécurité avec notre plateforme d'archives moderne.</p>
+            <div class="hero-buttons">
+                <a href="{{ url_for('register') }}" class="btn btn-primary btn-large">
+                    <i class="fas fa-rocket"></i>
+                    Commencer gratuitement
+                </a>
+                <a href="{{ url_for('login') }}" class="btn btn-outline btn-large">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Se connecter
+                </a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <div class="hero-card">
+                <div class="card-header">
+                    <i class="fas fa-folder"></i>
+                    <span>Mes Documents</span>
+                </div>
+                <div class="card-content">
+                    <div class="file-item">
+                        <i class="fas fa-file-pdf text-red"></i>
+                        <span>Rapport_2025.pdf</span>
+                    </div>
+                    <div class="file-item">
+                        <i class="fas fa-image text-blue"></i>
+                        <span>Présentation.png</span>
+                    </div>
+                    <div class="file-item">
+                        <i class="fas fa-file-word text-blue"></i>
+                        <span>Document.docx</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="features-section">
+    <div class="container">
+        <h2 class="section-title">Fonctionnalités principales</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                </div>
+                <h3>Upload simple</h3>
+                <p>Glissez-déposez vos fichiers ou cliquez pour les télécharger. Support de tous les formats populaires.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-folder-tree"></i>
+                </div>
+                <h3>Organisation intuitive</h3>
+                <p>Créez des dossiers et sous-dossiers pour organiser vos fichiers exactement comme vous le souhaitez.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h3>Recherche rapide</h3>
+                <p>Trouvez instantanément vos fichiers grâce à notre système de recherche avancé.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Sécurité avancée</h3>
+                <p>Vos données sont protégées par un chiffrement de niveau militaire et des protocoles de sécurité stricts.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="cta-section">
+    <div class="container">
+        <div class="cta-content">
+            <h2>Prêt à commencer ?</h2>
+            <p>Rejoignez des milliers d'utilisateurs qui font confiance à Archive Platform</p>
+            <a href="{{ url_for('register') }}" class="btn btn-primary btn-large">
+                Créer un compte gratuit
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

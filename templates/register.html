@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Inscription - Archive Platform{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <h1>Créer un compte</h1>
+            <p>Rejoignez Archive Platform dès aujourd'hui</p>
+        </div>
+        
+        <form method="POST" class="auth-form">
+            {# CSRF désactivé pour les tests - À réactiver en production #}
+            <div class="form-group">
+                <label for="username">Nom d'utilisateur</label>
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="username" name="username" required placeholder="Choisissez un nom d'utilisateur" minlength="3" maxlength="50" autocomplete="username">
+                </div>
+                <small>Entre 3 et 50 caractères</small>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Adresse email</label>
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="email" name="email" required placeholder="votre@email.com" autocomplete="email">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" name="password" required placeholder="Créez un mot de passe" minlength="8" autocomplete="new-password">
+                </div>
+                <small>Minimum 8 caractères avec majuscule, minuscule et chiffre</small>
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-full">
+                <i class="fas fa-user-plus"></i>
+                Créer mon compte
+            </button>
+        </form>
+        
+        <div class="auth-footer">
+            <p>Déjà un compte ? <a href="{{ url_for('login') }}">Se connecter</a></p>
+        </div>
+    </div>
+    
+    <div class="auth-side">
+        <div class="auth-side-content">
+            <h2>Commencez dès aujourd'hui</h2>
+            <p>Créez votre compte et découvrez la simplicité de notre plateforme de stockage.</p>
+            <div class="auth-features">
+                <div class="feature-item">
+                    <i class="fas fa-check"></i>
+                    <span>5 GB de stockage gratuit</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check"></i>
+                    <span>Partage de fichiers illimité</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check"></i>
+                    <span>Sécurité maximale</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check"></i>
+                    <span>Support technique 24/7</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

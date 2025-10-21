@@ -1,0 +1,34 @@
+# Dépendances pour Archive Platform - VERSION SÉCURISÉE
+# Versions à jour avec patches de sécurité
+
+# Framework principal
+Flask==3.0.0
+Werkzeug==3.0.1
+Jinja2==3.1.2
+
+# Sécurité
+bcrypt==4.1.2              # Hachage sécurisé des mots de passe
+Flask-Limiter==3.5.0       # Rate limiting
+Flask-WTF==1.2.1           # Protection CSRF
+
+# Dépendances core
+click==8.1.7
+itsdangerous==2.1.2
+MarkupSafe==2.1.3
+WTForms==3.1.1
+
+# Utilitaires (versions à jour)
+certifi==2024.2.2
+charset-normalizer==3.3.2
+idna==3.6
+Pillow==10.2.0             # Version sécurisée
+requests==2.31.0           # Version sécurisée
+urllib3==2.2.0
+pyyaml==6.0.1              # Version sécurisée
+
+# Production
+gunicorn==21.2.0           # Serveur WSGI pour production
+python-dotenv==1.0.0       # Gestion des variables d'environnement
+
+# Logging et monitoring
+python-json-logger==2.0.7

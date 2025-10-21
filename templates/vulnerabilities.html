@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+
+{% block title %}Documentation Sécurité - Archive Platform{% endblock %}
+
+{% block content %}
+<div class="vulnerabilities-container">
+    <div class="vuln-header">
+        <h1><i class="fas fa-shield-alt"></i> Documentation des Vulnérabilités</h1>
+        <p class="vuln-subtitle">Cette page documente les vulnérabilités intentionnelles présentes dans cette application à des fins éducatives.</p>
+        <div class="warning-banner">
+            <i class="fas fa-exclamation-triangle"></i>
+            <strong>ATTENTION :</strong> Cette application contient des vulnérabilités intentionnelles. Ne pas utiliser en production.
+        </div>
+    </div>
+    
+    <div class="vuln-content">
+        <div class="vuln-section">
+            <h2><i class="fas fa-bug"></i> Vulnérabilités SAST (Static Application Security Testing)</h2>
+            
+            <div class="vuln-card high">
+                <div class="vuln-header-card">
+                    <h3>1. Injection SQL</h3>
+                    <span class="severity high">CRITIQUE</span>
+                </div>
+                <div class="vuln-details">
+                    <p><strong>Description :</strong> L'application utilise des requêtes SQL non paramétrées dans plusieurs endroits.</p>
+                    <p><strong>Localisation :</strong></p>
+                    <ul>
+                        <li>Fonction <code>login()</code> - ligne 64</li>
+                        <li>Fonction <code>register()</code> - ligne 44</li>
+                        <li>Fonction <code>create_folder()</code> - ligne 106</li>
+                        <li>Fonction <code>upload_file()</code> - ligne 142</li>
+                        <li>Fonction <code>search()</code> - ligne 162</li>
+                    </ul>
+                    <p><strong>Exemple vulnérable :</strong></p>
+                    <pre><code>query = f"SELECT id, username FROM users WHERE username = '{username}' AND password = '{password_hash}'"</code></pre>
+                    <p><strong>Impact :</strong> Un attaquant peut exécuter du code SQL arbitraire, accéder à des données sensibles ou modifier la base de données.</p>
+                </div>
+            </div>
+            
+            <div class="vuln-card high">
+                <div class="vuln-header-card">
+                    <h3>2. Cross-Site Scripting (XSS)</h3>
+                    <span class="severity high">ÉLEVÉ</span>
+                </div>
+                <div class="vuln-details">
+                    <p><strong>Description :</strong> Validation insuffisante des entrées utilisateur permettant l'injection de scripts malveillants.</p>
+                    <p><strong>Localisation :</strong></p>
+                    <ul>
+                        <li>Champ <code>folder_name</code> dans <code>create_folder()</code></li>
+                        <li>Champ <code>filename</code> dans l'upload de fichiers</li>
+                        <li>Champ <code>username</code> affiché sans échappement</li>
+                    </ul>
+                    <p><strong>Impact :</strong> Exécution de scripts malveillants dans le navigateur des utilisateurs.</p>
+                </div>
+            </div>
+            
+            <div class="vuln-card medium">
+                <div class="vuln-header-card">
+                    <h3>3. Path Traversal</h3>
+                    <span class="severity medium">MOYEN</span>
+                </div>
+                <div class="vuln-details">
+                    <p><strong>Description :</strong> Validation insuffisante des noms de fichiers permettant l'accès à des fichiers système.</p>
+                    <p><strong>Localisation :</strong></p>
+                    <ul>
+                        <li>Fonction <code>upload_file()</code> - pas d'utilisation de <code>secure_filename()</code></li>
+                        <li>Fonction <code>download_file()</code> - pas de validation du chemin</li>
+                    </ul>
+                    <p><strong>Exemple vulnérable :</strong></p>
+                    <pre><code>filename = file.filename  # Pas de secure_filename!</code></pre>
+                    <p><strong>Impact :</strong> Accès à des fichiers sensibles du système ou écriture dans des répertoires non autorisés.</p>
+                </div>
+            </div>
+            
+            <div class="vuln-card medium">
+                <div class="vuln-header-card">
+                    <h3>4. Hachage Faible (MD5)</h3>
+                    <span class="severity medium">MOYEN</span>
+                </div>
+                <div class="vuln-details">
+                    <p><strong>Description :</strong> Utilisation de l'algorithme MD5 pour hasher les mots de passe.</p>
+                    <p><strong>Localisation :</strong> Fonctions <code>register()</code> et <code>login()</code></p>
+                    <p><strong>Code vulnérable :</strong></p>
+                    <pre><code>password_hash = hashlib.md5(password.encode()).hexdigest()</code></pre>
+                    <p><strong>Impact :</strong> Les mots de passe peuvent être facilement crackés par force brute ou rainbow tables.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="vuln-section">
+            <h2><i class="fas fa-cogs"></i> Vulnérabilités SCA (Software Composition Analysis)</h2>
+            
+            <div class="vuln-card high">
+                <div class="vuln-header-card">
+                    <h3>5. Dépendances Obsolètes</h3>
+                    <span class="severity high">CRITIQUE</span>
+                </div>
+                <div class="vuln-details">
+                    <p><strong>Description :</strong> Utilisation de versions obsolètes avec des CVE connus.</p>
+                    <p><strong>Dépendances vulnérables :</strong></p>
+                    <ul>
+                        <li>Flask 1.1.1 - CVE-2019-1010083</li>
+                        <li>Werkzeug 0.16.0 - CVE-2020-28724</li>
+                        <li>Jinja2 2.10.1 - CVE-2020-28493</li>
+                        <li>Pillow 6.2.0 - CVE-2020-5312</li>
+                        <li>PyYAML 5.1 - CVE-2020-1747</li>
+                    </ul>
+                    <p><strong>Impact :</strong> Exploitation de vulnérabilités connues dans les bibliothèques tierces.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="vuln-section">
+            <h2><i class="fas fa-key"></i> Vulnérabilités de Gestion des Secrets</h2>
+            
+            <div class="vuln-card critical">
+                <div class="vuln-header-card">
+                    <h3>6. Secrets Hardcodés</h3>
+                    <span class="severity critical">CRITIQUE</span>
+                </div>
+                <div class="vuln-details">
+                    <p><strong>Description :</strong> Mots de passe et clés secrètes directement dans le code source.</p>
+                    <p><strong>Localisation :</strong></p>
+                    <ul>
+                        <li><code>app.py</code> - clé secrète Flask</li>
+                        <li><code>config.py</code> - tokens API, mots de passe DB</li>
+                    </ul>
+                    <p><strong>Exemples :</strong></p>
+                    <pre><code>app.secret_key = 'super_secret_key_123_hardcoded'
+API_TOKEN = 'sk-1234567890abcdef'
+DATABASE_PASSWORD = 'admin123'</code></pre>
+                    <p><strong>Impact :</strong> Compromission complète de l'application et des services connectés.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="vuln-section">
+            <h2><i class="fas fa-wrench"></i> Vulnérabilités de Configuration</h2>
+            
+            <div class="vuln-card medium">
+                <div class="vuln-header-card">
+                    <h3>7. Mode Debug Activé</h3>
+                    <span class="severity medium">MOYEN</span>
+                </div>
+                <div class="vuln-details">
+                    <p><strong>Description :</strong> Le mode debug est activé en production.</p>
+                    <p><strong>Code :</strong> <code>app.run(debug=True)</code></p>
+                    <p><strong>Impact :</strong> Exposition d'informations sensibles en cas d'erreur.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="remediation-section">
+            <h2><i class="fas fa-tools"></i> Recommandations de Correction</h2>
+            <div class="remediation-grid">
+                <div class="remediation-card">
+                    <h4>Injection SQL</h4>
+                    <p>Utiliser des requêtes paramétrées avec des placeholders (?)</p>
+                </div>
+                <div class="remediation-card">
+                    <h4>XSS</h4>
+                    <p>Valider et échapper toutes les entrées utilisateur</p>
+                </div>
+                <div class="remediation-card">
+                    <h4>Path Traversal</h4>
+                    <p>Utiliser <code>secure_filename()</code> et valider les chemins</p>
+                </div>
+                <div class="remediation-card">
+                    <h4>Hachage</h4>
+                    <p>Utiliser bcrypt ou Argon2 avec salt aléatoire</p>
+                </div>
+                <div class="remediation-card">
+                    <h4>Dépendances</h4>
+                    <p>Mettre à jour toutes les bibliothèques vers les dernières versions</p>
+                </div>
+                <div class="remediation-card">
+                    <h4>Secrets</h4>
+                    <p>Utiliser des variables d'environnement et des gestionnaires de secrets</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

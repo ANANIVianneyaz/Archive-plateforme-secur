@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Connexion - Archive Platform{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <h1>Connexion</h1>
+            <p>Accédez à votre espace personnel</p>
+        </div>
+        
+        <form method="POST" class="auth-form">
+            {# CSRF désactivé pour les tests - À réactiver en production #}
+            <div class="form-group">
+                <label for="username">Nom d'utilisateur</label>
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="username" name="username" required placeholder="Votre nom d'utilisateur" autocomplete="username">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" name="password" required placeholder="Votre mot de passe" autocomplete="current-password">
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-full">
+                <i class="fas fa-sign-in-alt"></i>
+                Se connecter
+            </button>
+        </form>
+        
+        <div class="auth-footer">
+            <p>Pas encore de compte ? <a href="{{ url_for('register') }}">S'inscrire</a></p>
+        </div>
+    </div>
+    
+    <div class="auth-side">
+        <div class="auth-side-content">
+            <h2>Bienvenue de retour !</h2>
+            <p>Accédez à tous vos fichiers et dossiers en vous connectant à votre compte.</p>
+            <div class="auth-features">
+                <div class="feature-item">
+                    <i class="fas fa-check"></i>
+                    <span>Accès à tous vos fichiers</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check"></i>
+                    <span>Synchronisation automatique</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check"></i>
+                    <span>Partage sécurisé</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

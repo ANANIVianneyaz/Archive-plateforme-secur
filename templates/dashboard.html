@@ -1,0 +1,339 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Archive Platform{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Fil d'Ariane -->
+    {% if current_folder_name %}
+    <div class="breadcrumb">
+        <a href="{{ url_for('dashboard') }}"><i class="fas fa-home"></i> Accueil</a>
+        <span class="separator">/</span>
+        <span class="current"><i class="fas fa-folder-open"></i> {{ current_folder_name }}</span>
+    </div>
+    {% endif %}
+    
+    <div class="dashboard-header">
+        <div class="dashboard-title">
+            <h1>{% if current_folder_name %}{{ current_folder_name }}{% else %}Mes fichiers{% endif %}</h1>
+            <p>Gérez et organisez vos documents</p>
+        </div>
+        <div class="dashboard-actions">
+            <button class="btn btn-outline" onclick="openCreateLabelModal()">
+                <i class="fas fa-tags"></i>
+                Nouvelle étiquette
+            </button>
+            <button class="btn btn-outline" onclick="openCreateNoteModal()">
+                <i class="fas fa-sticky-note"></i>
+                Nouvelle note
+            </button>
+            <button class="btn btn-outline" onclick="openCreateFolderModal()">
+                <i class="fas fa-folder-plus"></i>
+                Nouveau dossier
+            </button>
+            <button class="btn btn-primary" onclick="openUploadModal()">
+                <i class="fas fa-plus"></i>
+                Télécharger fichier
+            </button>
+        </div>
+    </div>
+    
+    <!-- Affichage des étiquettes créées -->
+    {% if user_labels %}
+    <div class="labels-section">
+        <h3><i class="fas fa-tags"></i> Mes étiquettes</h3>
+        <div class="labels-list">
+            {% for label in user_labels %}
+            <span class="label" style="background-color: {{ label['color'] }}">
+                {{ label['name'] }}
+            </span>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    
+    <div class="dashboard-toolbar">
+        <div class="search-bar">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="Rechercher dans vos fichiers..." onkeyup="searchFiles()">
+        </div>
+        <div class="view-options">
+            <button class="view-btn active" data-view="grid">
+                <i class="fas fa-th"></i>
+            </button>
+            <button class="view-btn" data-view="list">
+                <i class="fas fa-list"></i>
+            </button>
+        </div>
+    </div>
+    
+    <div class="file-browser">
+        <!-- Dossiers -->
+        {% if folders %}
+            <div class="section-header">
+                <h3><i class="fas fa-folder"></i> Dossiers</h3>
+            </div>
+            <div class="items-grid" id="foldersGrid">
+                {% for folder in folders %}
+                <div class="item-card folder-item">
+                    <div class="item-icon">
+                        <i class="fas fa-folder"></i>
+                    </div>
+                    <div class="item-content">
+                        <h4 class="item-name">{{ folder['name'] }}</h4>
+                        <p class="item-meta">Créé le {{ folder['created_at'][:10] }}</p>
+                        
+                        <!-- Étiquettes du dossier -->
+                        {% if folder['id'] in folder_labels and folder_labels[folder['id']] %}
+                        <div class="folder-labels">
+                            {% for label in folder_labels[folder['id']] %}
+                            <span class="label" style="background-color: {{ label['color'] }}">
+                                {{ label['name'] }}
+                                <button class="label-remove remove-label-btn" 
+                                        data-folder-id="{{ folder['id'] }}" 
+                                        data-label-id="{{ label['id'] }}"
+                                        onclick="removeLabelFromFolder('{{ folder['id'] }}', '{{ label['id'] }}')">
+                                    ×
+                                </button>
+                            </span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="item-actions">
+                        <button class="action-btn add-label-btn" 
+                                data-folder-id="{{ folder['id'] }}"
+                                onclick="addLabelToFolder('{{ folder['id'] }}')" 
+                                title="Ajouter étiquette">
+                            <i class="fas fa-tag"></i>
+                        </button>
+                        <button class="action-btn" onclick="openFolder({{ folder['id'] }})" title="Ouvrir">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="action-btn delete-btn" onclick="deleteFolder({{ folder['id'] }})" title="Supprimer">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        <!-- Notes -->
+        {% if notes %}
+            <div class="section-header">
+                <h3><i class="fas fa-sticky-note"></i> Notes</h3>
+            </div>
+            <div class="items-grid" id="notesGrid">
+                {% for note in notes %}
+                <div class="item-card note-item">
+                    <div class="item-icon">
+                        <i class="fas fa-sticky-note text-blue"></i>
+                    </div>
+                    <div class="item-content">
+                        <h4 class="note-title">{{ note['title'] }}</h4>
+                        <div class="note-content">{{ note['content'] }}</div>
+                        <p class="item-meta">Créée le {{ note['created_at'][:10] }}</p>
+                    </div>
+                    <div class="item-actions">
+                        <button class="action-btn edit-note-btn" 
+                                data-note-id="{{ note['id'] }}"
+                                data-note-title="{{ note['title'] }}"
+                                data-note-content="{{ note['content'] }}"
+                                onclick="editNote('{{ note['id'] }}', this.getAttribute('data-note-title'), this.getAttribute('data-note-content'))" 
+                                title="Éditer">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn delete-btn delete-note-btn" 
+                                data-note-id="{{ note['id'] }}"
+                                onclick="deleteNote('{{ note['id'] }}')" 
+                                title="Supprimer">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        <!-- Fichiers -->
+        {% if files %}
+            <div class="section-header">
+                <h3><i class="fas fa-file"></i> Fichiers</h3>
+            </div>
+            <div class="items-grid" id="filesGrid">
+                {% for file in files %}
+                <div class="item-card file-item">
+                    <div class="item-icon">
+                        {% set ext = file['original_name'].split('.')[-1].lower() %}
+                        {% if ext in ['jpg', 'jpeg', 'png', 'gif', 'webp'] %}
+                            <i class="fas fa-image text-green"></i>
+                        {% elif ext in ['pdf'] %}
+                            <i class="fas fa-file-pdf text-red"></i>
+                        {% elif ext in ['doc', 'docx'] %}
+                            <i class="fas fa-file-word text-blue"></i>
+                        {% elif ext in ['txt'] %}
+                            <i class="fas fa-file-alt text-gray"></i>
+                        {% else %}
+                            <i class="fas fa-file text-gray"></i>
+                        {% endif %}
+                    </div>
+                    <div class="item-content">
+                        <h4 class="item-name">{{ file['original_name'] }}</h4>
+                        <p class="item-meta">{{ "%.2f"|format(file['file_size']/1024) }} KB</p>
+                    </div>
+                    <div class="item-actions">
+                        <button class="action-btn" onclick="downloadFile('{{ file['filename'] }}')">
+                            <i class="fas fa-download"></i>
+                        </button>
+                        <button class="action-btn" onclick="deleteFile({{ file['id'] }})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        {% if not folders and not files and not notes %}
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="fas fa-folder-open"></i>
+                </div>
+                <h3>Aucun fichier</h3>
+                <p>Commencez par télécharger vos premiers fichiers ou créer un dossier</p>
+                <button class="btn btn-primary" onclick="openUploadModal()">
+                    <i class="fas fa-plus"></i>
+                    Télécharger fichier
+                </button>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Modal pour créer un dossier -->
+<div id="createFolderModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Créer un nouveau dossier</h2>
+            <span class="close" onclick="closeCreateFolderModal()">&times;</span>
+        </div>
+        <form method="POST" action="{{ url_for('create_folder') }}">
+            <div class="form-group">
+                <label for="folder_name">Nom du dossier</label>
+                <input type="text" id="folder_name" name="folder_name" required placeholder="Nom du dossier" maxlength="100">
+                <input type="hidden" name="parent_id" value="{{ current_folder or '' }}">
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-outline" onclick="closeCreateFolderModal()">Annuler</button>
+                <button type="submit" class="btn btn-primary">Créer</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal pour télécharger un fichier -->
+<div id="uploadModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Télécharger un fichier</h2>
+            <span class="close" onclick="closeUploadModal()">&times;</span>
+        </div>
+        <form method="POST" action="{{ url_for('upload_file') }}" enctype="multipart/form-data">
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                </div>
+                <h3>Glissez vos fichiers ici</h3>
+                <p>ou cliquez pour sélectionner</p>
+                <input type="file" id="file" name="file" required>
+                <input type="hidden" name="folder_id" value="{{ current_folder or '' }}">
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-outline" onclick="closeUploadModal()">Annuler</button>
+                <button type="submit" class="btn btn-primary">Télécharger</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal pour créer une note -->
+<div id="createNoteModal" class="modal note-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Créer une nouvelle note</h2>
+            <span class="close" onclick="closeCreateNoteModal()">&times;</span>
+        </div>
+        <form method="POST" action="{{ url_for('create_note') }}">
+            <div class="form-group">
+                <label for="note_title">Titre de la note</label>
+                <input type="text" id="note_title" name="note_title" required placeholder="Titre de la note" maxlength="200">
+            </div>
+            <div class="form-group">
+                <label for="note_content">Contenu</label>
+                <textarea id="note_content" name="note_content" placeholder="Contenu de la note..." maxlength="10000"></textarea>
+                <input type="hidden" name="folder_id" value="{{ current_folder or '' }}">
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-outline" onclick="closeCreateNoteModal()">Annuler</button>
+                <button type="submit" class="btn btn-primary">Créer</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal pour créer une étiquette -->
+<div id="createLabelModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Créer une nouvelle étiquette</h2>
+            <span class="close" onclick="closeCreateLabelModal()">&times;</span>
+        </div>
+        <form method="POST" action="{{ url_for('create_label') }}">
+            <div class="form-group">
+                <label for="label_name">Nom de l'étiquette</label>
+                <input type="text" id="label_name" name="label_name" required placeholder="Nom de l'étiquette" maxlength="50">
+            </div>
+            <div class="form-group">
+                <label for="label_color">Couleur</label>
+                <div class="color-input">
+                    <input type="color" id="label_color" name="label_color" value="#3b82f6">
+                </div>
+                <small>Choisissez une couleur pour votre étiquette</small>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-outline" onclick="closeCreateLabelModal()">Annuler</button>
+                <button type="submit" class="btn btn-primary">Créer</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal pour ajouter une étiquette à un dossier -->
+<div id="addLabelModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Ajouter une étiquette au dossier</h2>
+            <span class="close" onclick="closeAddLabelModal()">&times;</span>
+        </div>
+        <form method="POST" action="{{ url_for('add_label_to_folder') }}" id="addLabelForm">
+            <input type="hidden" id="modal_folder_id" name="folder_id" value="">
+            <div class="form-group">
+                <label for="label_id_select">Étiquette</label>
+                <select id="label_id_select" name="label_id" required>
+                    <option value="">Sélectionnez une étiquette</option>
+                    {% for label in user_labels %}
+                    <option value="{{ label['id'] }}" style="background-color: {{ label['color'] }}">
+                        {{ label['name'] }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-outline" onclick="closeAddLabelModal()">Annuler</button>
+                <button type="submit" class="btn btn-primary">Ajouter</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
