@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Démonstration des Changements - TrustArchive</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    animation: {
+                        'slide-down': 'slideDown 0.3s ease-out',
+                    },
+                    keyframes: {
+                        slideDown: {
+                            '0%': { transform: 'translateY(-100%)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                    },
+                }
+            }
+        }
+    </script>
+    <script>
+        // Prevent white flash on dark mode
+        (function() {
+            const theme = localStorage.getItem('theme') || 'light';
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+            }
+        })();
+    </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
+    <div class="container mx-auto px-4 py-12">
+        <div class="text-center mb-12">
+            <h1 class="text-5xl font-extrabold mb-4">
+                <span class="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                    Démonstration des Changements
+                </span>
+            </h1>
+            <p class="text-xl text-gray-600 dark:text-gray-400">TrustArchive - Version Tailwind CSS</p>
+            
+            <div class="mt-6">
+                <button id="themeToggle" class="px-6 py-3 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors">
+                    <i class="fas fa-moon"></i>
+                    Basculer Mode Sombre
+                </button>
+            </div>
+        </div>
+
+        <!-- Problème 1: 4 Cartes sur une ligne -->
+        <div class="mb-16">
+            <h2 class="text-3xl font-bold mb-6">✅ 1. Les 4 Cartes sur une Ligne</h2>
+            <p class="text-lg text-gray-600 dark:text-gray-400 mb-8">
+                Sur grand écran, les 4 cartes sont affichées sur une seule ligne. Sur mobile et tablette, elles s'adaptent automatiquement.
+            </p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg hover:shadow-2xl hover:scale-105 transition-all">
+                    <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-cloud-upload-alt text-2xl text-indigo-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Upload simple</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Glissez-déposez vos fichiers.</p>
+                </div>
+                
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg hover:shadow-2xl hover:scale-105 transition-all">
+                    <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-folder-tree text-2xl text-purple-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Organisation</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Organisez vos fichiers.</p>
+                </div>
+                
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg hover:shadow-2xl hover:scale-105 transition-all">
+                    <div class="w-12 h-12 bg-pink-100 dark:bg-pink-900/30 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-search text-2xl text-pink-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Recherche</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Trouvez instantanément.</p>
+                </div>
+                
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg hover:shadow-2xl hover:scale-105 transition-all">
+                    <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-shield-alt text-2xl text-green-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Sécurité</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Chiffrement militaire.</p>
+                </div>
+            </div>
+            
+            <div class="mt-6 p-4 bg-green-100 dark:bg-green-900/30 rounded-xl">
+                <p class="text-green-800 dark:text-green-300">
+                    <i class="fas fa-check-circle"></i>
+                    <strong>Résolu :</strong> Utilisé <code class="bg-green-200 dark:bg-green-800 px-2 py-1 rounded">xl:grid-cols-4</code> pour afficher 4 colonnes sur grand écran
+                </p>
+            </div>
+        </div>
+
+        <!-- Problème 2: Défilement -->
+        <div class="mb-16">
+            <h2 class="text-3xl font-bold mb-6">✅ 2. Problème de Défilement Corrigé</h2>
+            <p class="text-lg text-gray-600 dark:text-gray-400 mb-8">
+                La navbar est en position fixe et le contenu ne se superpose plus lors du défilement.
+            </p>
+            
+            <div class="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg">
+                <div class="space-y-4">
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0 w-10 h-10 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center">
+                            <i class="fas fa-check text-indigo-600"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold">Navbar en position fixed</h4>
+                            <p class="text-gray-600 dark:text-gray-400">La navbar reste en haut avec <code class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">fixed top-0 z-50</code></p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0 w-10 h-10 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center">
+                            <i class="fas fa-check text-indigo-600"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold">Contenu avec padding-top</h4>
+                            <p class="text-gray-600 dark:text-gray-400">Le contenu a un <code class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">pt-16</code> pour compenser</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0 w-10 h-10 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center">
+                            <i class="fas fa-check text-indigo-600"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold">Plus de superposition</h4>
+                            <p class="text-gray-600 dark:text-gray-400">Les sections défilent correctement sans problème de z-index</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problème 3: Flash Blanc -->
+        <div class="mb-16">
+            <h2 class="text-3xl font-bold mb-6">✅ 3. Plus de Flash Blanc en Mode Sombre</h2>
+            <p class="text-lg text-gray-600 dark:text-gray-400 mb-8">
+                Script inline dans le &lt;head&gt; qui applique le thème AVANT le rendu de la page.
+            </p>
+            
+            <div class="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg">
+                <pre class="bg-gray-100 dark:bg-gray-900 p-4 rounded-xl overflow-x-auto">
+<code>&lt;script&gt;
+    (function() {
+        const theme = localStorage.getItem('theme') || 'light';
+        if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+        }
+    })();
+&lt;/script&gt;</code></pre>
+                
+                <div class="mt-4 p-4 bg-blue-100 dark:bg-blue-900/30 rounded-xl">
+                    <p class="text-blue-800 dark:text-blue-300">
+                        <i class="fas fa-info-circle"></i>
+                        <strong>Test :</strong> Basculez en mode sombre et actualisez la page (F5). Pas de flash blanc !
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problème 4: Notifications -->
+        <div class="mb-16">
+            <h2 class="text-3xl font-bold mb-6">✅ 4. Notifications Auto-Disparition</h2>
+            <p class="text-lg text-gray-600 dark:text-gray-400 mb-8">
+                Les notifications apparaissent et disparaissent automatiquement après 4 secondes.
+            </p>
+            
+            <div class="text-center">
+                <button id="showNotification" class="px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-semibold hover:shadow-2xl hover:scale-105 transition-all">
+                    <i class="fas fa-bell"></i>
+                    Afficher une Notification
+                </button>
+            </div>
+        </div>
+
+        <!-- Tailwind CSS -->
+        <div class="mb-16">
+            <h2 class="text-3xl font-bold mb-6">🎨 Tailwind CSS Intégré</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg">
+                    <h3 class="text-xl font-bold mb-4 text-indigo-600">Avantages</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-center space-x-2">
+                            <i class="fas fa-check-circle text-green-500"></i>
+                            <span>Classes utilitaires pour tout</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <i class="fas fa-check-circle text-green-500"></i>
+                            <span>Dark mode intégré</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <i class="fas fa-check-circle text-green-500"></i>
+                            <span>Responsive design facile</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <i class="fas fa-check-circle text-green-500"></i>
+                            <span>Performance optimisée</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg">
+                    <h3 class="text-xl font-bold mb-4 text-purple-600">Nouveaux Effets</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-center space-x-2">
+                            <i class="fas fa-star text-yellow-500"></i>
+                            <span>Glassmorphism</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <i class="fas fa-star text-yellow-500"></i>
+                            <span>Gradients modernes</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <i class="fas fa-star text-yellow-500"></i>
+                            <span>Animations fluides</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <i class="fas fa-star text-yellow-500"></i>
+                            <span>Hover effects avancés</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notificationContainer" class="fixed top-20 right-4 z-50 space-y-2" style="max-width: 400px;"></div>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+        
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            const theme = html.classList.contains('dark') ? 'dark' : 'light';
+            localStorage.setItem('theme', theme);
+        });
+        
+        // Show Notification
+        const showNotificationBtn = document.getElementById('showNotification');
+        const notificationContainer = document.getElementById('notificationContainer');
+        
+        showNotificationBtn.addEventListener('click', () => {
+            const notification = document.createElement('div');
+            notification.className = 'bg-white dark:bg-gray-800 border-l-4 border-green-500 rounded-lg shadow-2xl p-4 flex items-center space-x-3 animate-slide-down';
+            notification.innerHTML = `
+                <i class="fas fa-check-circle text-green-500 text-xl"></i>
+                <span class="flex-1 font-medium">C'est une notification qui va disparaître dans 4 secondes !</span>
+                <button class="close-notification text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            notificationContainer.appendChild(notification);
+            
+            // Auto dismiss after 4 seconds
+            const autoDismiss = setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateX(100%)';
+                notification.style.transition = 'all 0.3s';
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }, 4000);
+            
+            // Manual close
+            notification.querySelector('.close-notification').addEventListener('click', () => {
+                clearTimeout(autoDismiss);
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateX(100%)';
+                notification.style.transition = 'all 0.3s';
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            });
+        });
+    </script>
+</body>
+</html>

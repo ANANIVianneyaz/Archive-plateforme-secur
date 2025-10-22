@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrustArchive - Présentation des Améliorations</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        .subtitle {
+            text-align: center;
+            font-size: 1.3rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+        }
+        .section {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .section h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .icon {
+            font-size: 2.5rem;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .feature-card {
+            background: rgba(255,255,255,0.15);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .feature-card p {
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        .checkmark {
+            color: #10B981;
+            font-size: 1.5rem;
+        }
+        .cta-box {
+            background: rgba(255,255,255,0.2);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            margin-top: 40px;
+        }
+        .cta-box h2 {
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .before, .after {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .before h3 { color: #FCA5A5; }
+        .after h3 { color: #86EFAC; }
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        ul li {
+            margin: 10px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        ul li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            font-size: 1.5rem;
+        }
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .subtitle { font-size: 1rem; }
+            .comparison { grid-template-columns: 1fr; }
+            .features-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 TrustArchive - Présentation</h1>
+        <p class="subtitle">Transformation Ultra-Professionnelle du Front-End</p>
+
+        <div class="section">
+            <h2><span class="icon">🎨</span> Nouveau Design Premium</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3><span class="checkmark">✅</span> Logo Professionnel</h3>
+                    <p>Nouveau logo SVG avec icône de coffre-fort et branding "TrustArchive"</p>
+                </div>
+                <div class="feature-card">
+                    <h3><span class="checkmark">✅</span> Glassmorphism</h3>
+                    <p>Effet verre dépoli moderne sur navbar, modales et cartes</p>
+                </div>
+                <div class="feature-card">
+                    <h3><span class="checkmark">✅</span> Animations Fluides</h3>
+                    <p>Transitions 3D, parallax, scroll reveal et hover effects</p>
+                </div>
+                <div class="feature-card">
+                    <h3><span class="checkmark">✅</span> Thème Sombre/Clair</h3>
+                    <p>Toggle élégant avec sauvegarde automatique</p>
+                </div>
+                <div class="feature-card">
+                    <h3><span class="checkmark">✅</span> Responsive Perfect</h3>
+                    <p>Adapté à tous les écrans (mobile, tablet, desktop)</p>
+                </div>
+                <div class="feature-card">
+                    <h3><span class="checkmark">✅</span> Compteurs Animés</h3>
+                    <p>Statistiques qui s'animent au scroll avec effet de montée</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><span class="icon">🔒</span> Éléments de Confiance</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3><span class="checkmark">✅</span> Badges de Sécurité</h3>
+                    <p>Chiffrement AES-256, SSL/TLS Certifié, Conformité RGPD</p>
+                </div>
+                <div class="feature-card">
+                    <h3><span class="checkmark">✅</span> Stats Impressionnantes</h3>
+                    <p>50K utilisateurs, 1M fichiers, 99.9% disponibilité</p>
+                </div>
+                <div class="feature-card">
+                    <h3><span class="checkmark">✅</span> Design Rassurant</h3>
+                    <p>Icônes premium, messages de confiance, preuves sociales</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><span class="icon">📊</span> Comparaison Avant/Après</h2>
+            <div class="comparison">
+                <div class="before">
+                    <h3>❌ Avant</h3>
+                    <ul>
+                        <li>Design basique et générique</li>
+                        <li>Peu d'éléments de confiance</li>
+                        <li>Animations limitées</li>
+                        <li>Nom générique</li>
+                        <li>Pas de thème sombre</li>
+                    </ul>
+                </div>
+                <div class="after">
+                    <h3>✅ Après</h3>
+                    <ul>
+                        <li>Design ultra-professionnel</li>
+                        <li>Badges et certifications</li>
+                        <li>Animations sophistiquées</li>
+                        <li>Branding fort "TrustArchive"</li>
+                        <li>Thème sombre/clair complet</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><span class="icon">⚡</span> Technologies Utilisées</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>HTML5 / CSS3</h3>
+                    <p>Variables CSS, Grid, Flexbox, Animations</p>
+                </div>
+                <div class="feature-card">
+                    <h3>JavaScript ES6+</h3>
+                    <p>Classes, Modules, IntersectionObserver</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Font Awesome</h3>
+                    <p>Icônes premium pour une UI moderne</p>
+                </div>
+                <div class="feature-card">
+                    <h3>SVG Graphics</h3>
+                    <p>Logo et favicon vectoriels</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-box">
+            <h2>🎯 Objectif Pédagogique</h2>
+            <p style="font-size: 1.2rem; margin-bottom: 30px; opacity: 0.95;">
+                Démontrer qu'une interface <strong>ultra-professionnelle</strong> et <strong>rassurante</strong><br>
+                ne garantit PAS la sécurité du code backend !
+            </p>
+            <a href="http://localhost:5000" class="btn">🚀 Lancer TrustArchive</a>
+        </div>
+    </div>
+</body>
+</html>
